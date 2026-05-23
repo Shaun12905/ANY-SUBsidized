@@ -20,36 +20,6 @@ npm run dev
 
 Open http://localhost:5173 in your browser.
 
-🏗️ Project Structure
-
-subsidized/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   ├── EconomyHeader.jsx      # Top bar: profile + animated counters
-│   │   ├── KillSwitchModal.jsx    # Overlay: Gemini AI + cancel redirect
-│   │   ├── RealityToggle.jsx      # CSS cross-fade price ↔ plates
-│   │   ├── SmartSwap.jsx          # Free alternative reveal panel
-│   │   └── SubscriptionCard.jsx   # Main bento card
-│   ├── data/
-│   │   └── subscriptions.js       # All subscription config + fallback scripts
-│   ├── hooks/
-│   │   └── useGeminiRetention.js  # Gemini API hook with fallback logic
-│   ├── utils/
-│   │   └── icsGenerator.js        # Blob API → .ics file download
-│   ├── App.jsx                    # Root component + global state
-│   ├── index.css                  # Tailwind + custom animations
-│   └── main.jsx                   # React entry point
-├── index.html
-├── .env.example
-├── .gitignore
-├── package.json
-├── postcss.config.js
-├── tailwind.config.js
-└── vite.config.js
-
-
 📄 Tech Stack
 React 18 + Vite 5 — fast HMR dev environment
 Tailwind CSS 3 — utility-first styling
