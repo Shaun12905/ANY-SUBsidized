@@ -1,0 +1,181 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base resets ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #020408;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── Background grid texture ─────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(244, 63, 94, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(244, 63, 94, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Reality Toggle: cross-fade animation ────────────────────── */
+/*
+  Two phases alternate every 4 seconds:
+    Phase A (0–50%):  currency label visible
+    Phase B (50–100%): plates label visible
+  No layout shift — both are absolute, container is fixed height.
+*/
+@keyframes phase-a-cycle {
+  0%       { opacity: 1; transform: translateY(0); }
+  40%      { opacity: 1; transform: translateY(0); }
+  50%      { opacity: 0; transform: translateY(-8px); }
+  90%      { opacity: 0; transform: translateY(8px); }
+  100%     { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes phase-b-cycle {
+  0%       { opacity: 0; transform: translateY(8px); }
+  40%      { opacity: 0; transform: translateY(8px); }
+  50%      { opacity: 1; transform: translateY(0); }
+  90%      { opacity: 1; transform: translateY(0); }
+  100%     { opacity: 0; transform: translateY(-8px); }
+}
+
+.reality-phase-a {
+  animation: phase-a-cycle 6s ease-in-out infinite;
+}
+.reality-phase-b {
+  animation: phase-b-cycle 6s ease-in-out infinite;
+}
+
+/* ─── Shimmer loading skeleton ────────────────────────────────── */
+.shimmer-bg {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.04) 0%,
+    rgba(255,255,255,0.10) 50%,
+    rgba(255,255,255,0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* ─── Glassmorphism card ──────────────────────────────────────── */
+.glass-card {
+  background: rgba(10, 15, 26, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* ─── Scrollbar styling ───────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(244, 63, 94, 0.3); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(244, 63, 94, 0.6); }
+
+/* ─── Focus styles ────────────────────────────────────────────── */
+*:focus-visible {
+  outline: 2px solid rgba(244, 63, 94, 0.5);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Scan line overlay effect ────────────────────────────────── */
+.scanline::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(244, 63, 94, 0.02) 50%,
+    transparent 100%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+}
+
+/* ─── Kill switch pulse ring ──────────────────────────────────── */
+@keyframes kill-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); }
+  70%  { box-shadow: 0 0 0 10px rgba(244, 63, 94, 0); }
+  100% { box-shadow: 0 0 0 0  rgba(244, 63, 94, 0); }
+}
+.kill-pulse { animation: kill-pulse 2s ease-out infinite; }
+
+/* ─── Modal backdrop ──────────────────────────────────────────── */
+.modal-backdrop {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ─── Swap panel slide ────────────────────────────────────────── */
+@keyframes swap-reveal {
+  from { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; }
+  to   { opacity: 1; max-height: 300px; padding-top: 16px; padding-bottom: 16px; }
+}
+.swap-reveal {
+  animation: swap-reveal 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  overflow: hidden;
+}
+
+/* ─── Number counter roll ─────────────────────────────────────── */
+@keyframes roll-up {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.roll-up { animation: roll-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+/* ─── Settings drawer slide ───────────────────────────────────── */
+@keyframes drawer-in {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.drawer-panel-enter {
+  animation: drawer-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.drawer-backdrop-enter {
+  animation: backdrop-in 0.25s ease-out forwards;
+}
+
+/* ─── Card removal (kill switch confirm) ────────────────────── */
+@keyframes card-remove {
+  to {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+    filter: grayscale(1);
+  }
+}
+.card-removing {
+  animation: card-remove 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+}
+
+/* ─── Modal entrance ──────────────────────────────────────────── */
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ─── Typing cursor blink ─────────────────────────────────────── */
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+.cursor-blink { animation: blink 1s step-end infinite; }
